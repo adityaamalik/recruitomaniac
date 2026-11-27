@@ -1,0 +1,9 @@
+# Installed packages (recreated by `uv sync`)
+.venv/
+
+# Files Python generates while running
+__pycache__/
+*.pyc
+
+# Secrets such as API keys and database passwords
+.env
