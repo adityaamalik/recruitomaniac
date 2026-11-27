@@ -7,3 +7,5 @@ __pycache__/
 
 # Secrets such as API keys and database passwords
 .env
+.env.*
+!.env.example
