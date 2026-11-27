@@ -1,6 +1,6 @@
 import { SiteFooter } from "../_components/site-footer";
 import { SiteHeader } from "../_components/site-header";
-import "./site.css";
+import "../site.css";
 
 // Shared shell for the public pages: /, /about, /pricing, /how-it-works, /contact.
 // The (site) folder name is a route group, so it does not appear in the URL.

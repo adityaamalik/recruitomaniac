@@ -31,18 +31,18 @@ export function SiteHeader() {
         </ul>
 
         <div className="flex items-center gap-1 sm:gap-3">
-          <button
-            type="button"
+          <Link
+            href="/login"
             className="cursor-pointer rounded-full px-2 py-2 text-sm font-semibold text-(--ink) transition hover:text-(--accent) sm:px-4"
           >
             Login
-          </button>
-          <button
-            type="button"
+          </Link>
+          <Link
+            href="/register"
             className={`${primaryButton} whitespace-nowrap px-3.5 py-2 text-sm sm:px-5 sm:py-2.5`}
           >
             Get Started
-          </button>
+          </Link>
         </div>
       </nav>
 

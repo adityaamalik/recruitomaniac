@@ -263,13 +263,13 @@ export default function Home() {
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <button
-            type="button"
+          <Link
+            href="/register"
             className={`${primaryButton} w-full px-8 py-3.5 sm:w-auto`}
           >
             Get Started
             <Icon name="arrow" />
-          </button>
+          </Link>
           <Link
             href="/how-it-works"
             className={`${secondaryButton} w-full px-8 py-3.5 sm:w-auto`}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Icon } from "./icon";
 
 export const primaryButton =
@@ -5,6 +6,10 @@ export const primaryButton =
 
 export const secondaryButton =
   "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-(--line) bg-white font-semibold text-(--ink) transition hover:border-(--ink) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent)";
+
+/** Style for text inputs, selects and textareas. */
+export const fieldClass =
+  "mt-2 w-full rounded-xl border border-(--line) bg-white px-4 py-3 text-(--ink) outline-none transition placeholder:text-(--subtle) focus:border-(--accent) focus:ring-4 focus:ring-(--accent)/10";
 
 export function Logo() {
   return (
@@ -78,13 +83,13 @@ export function CtaBanner({ title, text }: { title: string; text: string }) {
           {title}
         </h2>
         <p className="mx-auto mt-5 max-w-xl text-lg text-white/70">{text}</p>
-        <button
-          type="button"
+        <Link
+          href="/register"
           className="mt-10 inline-flex cursor-pointer items-center gap-2 rounded-full bg-white px-8 py-3.5 font-semibold text-(--ink) transition hover:bg-(--accent-soft) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
         >
           Get Started
           <Icon name="arrow" />
-        </button>
+        </Link>
       </div>
     </section>
   );

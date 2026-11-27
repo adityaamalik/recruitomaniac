@@ -1,10 +1,7 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { primaryButton } from "../../_components/ui";
-
-const fieldClass =
-  "mt-2 w-full rounded-xl border border-(--line) bg-white px-4 py-3 text-(--ink) outline-none transition placeholder:text-(--subtle) focus:border-(--accent) focus:ring-4 focus:ring-(--accent)/10";
+import { fieldClass, primaryButton } from "../../_components/ui";
 
 export function ContactForm() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {

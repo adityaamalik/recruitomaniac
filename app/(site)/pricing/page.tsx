@@ -103,12 +103,12 @@ export default function PricingPage() {
                   Contact sales
                 </Link>
               ) : (
-                <button
-                  type="button"
+                <Link
+                  href="/register"
                   className={`${plan.featured ? primaryButton : secondaryButton} w-full py-3`}
                 >
                   Get Started
-                </button>
+                </Link>
               )}
             </div>
           </article>
