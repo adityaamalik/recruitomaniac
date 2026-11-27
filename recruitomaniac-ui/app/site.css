@@ -1,0 +1,68 @@
+/* Styles shared by the public pages and the login/register pages. Class names are prefixed because this file is global. */
+
+/* Theme colours. Change them here to restyle every public page. */
+.site-root {
+  --ink: #17161a;
+  --body: #55525c;
+  --subtle: #6f6b78;
+  --accent: #5d4a87;
+  --accent-hover: #4a3a6d;
+  --accent-soft: #f2eff7;
+  --line: #e6e3eb;
+  --surface: #f9f8fb;
+}
+
+/* Faded grid behind the hero and CTA banners */
+.site-grid {
+  background-image:
+    linear-gradient(to right, rgb(125 108 160 / 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(125 108 160 / 0.1) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 100%);
+}
+
+.site-float {
+  animation: site-float 6s ease-in-out infinite;
+}
+
+.site-float-delayed {
+  animation: site-float 6s ease-in-out -3s infinite;
+}
+
+.site-marquee {
+  width: max-content;
+  animation: site-marquee 32s linear infinite;
+}
+
+.site-marquee:hover {
+  animation-play-state: paused;
+}
+
+.site-marquee-mask {
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+@keyframes site-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -12px;
+  }
+}
+
+/* The list is rendered twice, so shifting by half loops seamlessly */
+@keyframes site-marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-float,
+  .site-float-delayed,
+  .site-marquee {
+    animation: none;
+  }
+}
