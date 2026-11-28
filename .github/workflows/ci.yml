@@ -1,0 +1,77 @@
+# CI: checks the web app and the API on GitHub's computers.
+# GitHub reads every file in .github/workflows/ and runs it when its `on:` events happen.
+name: CI
+
+# When to run
+on:
+  pull_request: # every pull request
+  push:
+    branches: [main] # every change that lands on main
+
+# The workflow only needs to read the code, so give it no other access.
+permissions:
+  contents: read
+
+# If you push again to the same branch, cancel the older run that is still going.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Jobs run at the same time, each on a fresh Linux machine.
+jobs:
+  ui:
+    name: Web app
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: recruitomaniac-ui # run commands inside this folder
+    env:
+      NEXT_TELEMETRY_DISABLED: 1 # don't send Next.js usage statistics from CI
+    steps:
+      - name: Download the code
+        uses: actions/checkout@v7
+
+      - name: Install Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm # reuse downloaded packages between runs
+          cache-dependency-path: recruitomaniac-ui/package-lock.json
+
+      - name: Install packages
+        run: npm ci # installs the exact versions in package-lock.json
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check and build
+        run: npm run build # `next build` also fails on TypeScript errors
+
+  api:
+    name: API
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: recruitomaniac-api
+    steps:
+      - name: Download the code
+        uses: actions/checkout@v7
+
+      # Pinned to an exact commit because it comes from outside GitHub. Its version is noted after "#".
+      - name: Install uv
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: recruitomaniac-api/uv.lock
+
+      - name: Install Python and packages
+        run: uv sync --locked # fails if uv.lock is out of date with pyproject.toml
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Check formatting
+        run: uv run ruff format --check .
+
+      - name: Run tests
+        run: uv run pytest

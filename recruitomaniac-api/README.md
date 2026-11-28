@@ -22,11 +22,22 @@ Then open:
 
 The server restarts by itself when you save a file. Press `Ctrl + C` to stop it.
 
+## Check your code
+
+Run these before opening a pull request. CI runs the same ones on GitHub.
+
+```bash
+uv run ruff check .      # find likely mistakes
+uv run ruff format .     # tidy the formatting
+uv run pytest            # run the tests
+```
+
 ## Files
 
 | File              | What it is for                                              |
 | ----------------- | ----------------------------------------------------------- |
 | `main.py`         | The server and its routes                                   |
+| `tests/`          | Automatic tests, run with pytest                            |
 | `pyproject.toml`  | Project details and the packages it needs                   |
 | `uv.lock`         | Exact package versions. uv updates it, so don't edit it     |
 | `.python-version` | The Python version uv uses                                  |

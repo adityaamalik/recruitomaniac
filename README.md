@@ -1,5 +1,7 @@
 # Recruitomaniac
 
+[![CI](https://github.com/adityaamalik/recruitomaniac/actions/workflows/ci.yml/badge.svg)](https://github.com/adityaamalik/recruitomaniac/actions/workflows/ci.yml)
+
 An AI-assisted recruitment platform: AI handles the repetitive work, and people make the hiring decisions.
 
 > **Work in progress.** This is a portfolio project, so please don't upload real candidate data.
@@ -34,6 +36,7 @@ An AI-assisted recruitment platform: AI handles the repetitive work, and people 
 ```
 recruitomaniac-ui/    Web app
 recruitomaniac-api/   API
+.github/workflows/    CI checks, run by GitHub on every pull request
 ```
 
 ## Getting started
