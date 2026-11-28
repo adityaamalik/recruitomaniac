@@ -54,7 +54,7 @@ cd recruitomaniac
 cd recruitomaniac-api
 cp .env.example .env
 uv sync
-uv run fastapi dev main.py
+uv run fastapi dev
 ```
 
 **Web app**, at http://localhost:3000 (in a second terminal, from the project folder):
