@@ -1,32 +1,73 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useState, type SubmitEvent } from "react";
 import { GoogleButton, OrDivider } from "../../_components/google-button";
-import { fieldClass, primaryButton } from "../../_components/ui";
+import { FormMessage, fieldClass, primaryButton } from "../../_components/ui";
+import { getSupabase } from "../../_lib/supabase";
 
 const MIN_PASSWORD_LENGTH = 8;
 
 export function RegisterForm() {
+  const router = useRouter();
+
   // Each input's current value is kept in state.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // Message shown under the form when something is wrong ("" means no error).
+  // True while we wait for Supabase, so the button can't be clicked twice.
+  const [isLoading, setIsLoading] = useState(false);
+  // Messages shown under the form ("" means none).
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     // Stop the browser from reloading the page.
     event.preventDefault();
+    setError("");
+    setSuccess("");
 
     if (password !== confirmPassword) {
       setError("The passwords don't match.");
       return;
     }
 
-    setError("");
+    setIsLoading(true);
 
-    // TODO: send `email` and `password` to the backend to create the account.
+    // Create the account in Supabase. If email confirmation is on, Supabase sends
+    // an email whose link brings the user back to `emailRedirectTo`, logged in.
+    const { data, error } = await getSupabase().auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/dashboard` },
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      // For example "Password should be at least 8 characters".
+      setError(error.message);
+      return;
+    }
+
+    // A session means the user is already logged in (email confirmation is off).
+    if (data.session) {
+      router.push("/dashboard");
+      return;
+    }
+
+    // With email confirmation on, Supabase doesn't say "this email is taken"
+    // (so strangers can't check who has an account). An empty `identities`
+    // list is how it signals that the account already exists.
+    if (data.user?.identities?.length === 0) {
+      setError("An account with this email already exists. Try logging in.");
+      return;
+    }
+
+    setSuccess(
+      `We've sent a confirmation link to ${email}. Open it to finish creating your account.`,
+    );
   }
 
   return (
@@ -76,14 +117,15 @@ export function RegisterForm() {
           />
         </label>
 
-        {error && (
-          <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </p>
-        )}
+        {error && <FormMessage type="error">{error}</FormMessage>}
+        {success && <FormMessage type="success">{success}</FormMessage>}
 
-        <button type="submit" className={`${primaryButton} w-full py-3`}>
-          Create account
+        <button
+          type="submit"
+          disabled={isLoading}
+          className={`${primaryButton} w-full py-3`}
+        >
+          {isLoading ? "Creating account..." : "Create account"}
         </button>
       </form>
     </>
