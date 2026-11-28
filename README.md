@@ -21,7 +21,8 @@ An AI-assisted recruitment platform: AI handles the repetitive work, and people 
 | Public pages (home, about, pricing, how it works, contact) | Built                             |
 | Login and registration screens                           | Built, not yet connected to the API |
 | API server                                               | Starter only                        |
-| Authentication and database                              | Planned                             |
+| Authentication (Supabase)                                | API checks logins; web app next     |
+| Database                                                 | Planned                             |
 | Job postings, CV parsing and candidate profiling         | Planned                             |
 | Human review, interview scheduling and dashboard         | Planned                             |
 
@@ -29,6 +30,7 @@ An AI-assisted recruitment platform: AI handles the repetitive work, and people 
 
 - **Web app:** Next.js 16, React 19, TypeScript, Tailwind CSS 4
 - **API:** Python 3.13, FastAPI, uv
+- **Auth:** Supabase Auth (email and password, Google)
 - **Database (planned):** PostgreSQL
 
 ## Project structure
@@ -66,7 +68,7 @@ npm install
 npm run dev
 ```
 
-The values in `.env` are placeholders for upcoming features. The current code runs without changing them.
+Before starting the API, set `SUPABASE_URL` in `recruitomaniac-api/.env` to your [Supabase](https://supabase.com) project's URL. The other values are for upcoming features.
 
 ## Roadmap
 
