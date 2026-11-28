@@ -23,6 +23,28 @@ Then open:
 
 The server restarts by itself when you save a file. Press `Ctrl + C` to stop it.
 
+`SUPABASE_URL` must be set in `.env`, or the server stops with `supabase_url Field required`.
+
+## Logins
+
+Users sign up and log in through [Supabase Auth](https://supabase.com/docs/guides/auth) in the web app.
+The web app then sends the user's access token with each request:
+
+```
+Authorization: Bearer <access token>
+```
+
+[`app/security.py`](app/security.py) checks the token with Supabase's public keys.
+To require a login:
+
+- **For one route**, add a `user` parameter:
+  ```python
+  def my_route(user: Annotated[CurrentUser, Depends(get_current_user)]):
+  ```
+- **For every route in a file**, add `dependencies=[Depends(get_current_user)]` to its `APIRouter(...)`.
+
+To try a protected route, copy a user's access token. Then click **Authorize** on the `/docs` page and paste it in.
+
 ## Check your code
 
 Run these before opening a pull request. CI runs the same ones on GitHub.
@@ -35,17 +57,19 @@ uv run pytest            # run the tests
 
 ## Files
 
-| File                  | What it is for                                          |
-| --------------------- | ------------------------------------------------------- |
-| `app/main.py`         | Creates the server, allows the web app (CORS), adds the routes |
-| `app/config.py`       | Reads settings from `.env`                              |
-| `app/routes/`         | One file per group of routes, such as `auth.py`         |
-| `tests/`              | Automatic tests, run with pytest                        |
-| `.env.example`        | The settings the API needs. Copy it to `.env`           |
-| `pyproject.toml`  | Project details and the packages it needs                   |
-| `uv.lock`         | Exact package versions. uv updates it, so don't edit it     |
-| `.python-version` | The Python version uv uses                                  |
-| `.gitignore`      | Files that git should not save                              |
+| File                  | What it is for                                                  |
+| --------------------- | --------------------------------------------------------------- |
+| `app/main.py`         | Creates the server, allows the web app (CORS), adds the routes  |
+| `app/config.py`       | Reads settings from `.env`                                      |
+| `app/security.py`     | Checks the Supabase login token sent with each request          |
+| `app/routes/`         | One file per group of routes, such as `auth.py`                 |
+| `tests/`              | Automatic tests, run with pytest                                |
+| `tests/conftest.py`   | Shared test setup, including fake Supabase keys and test tokens |
+| `.env.example`        | The settings the API needs. Copy it to `.env`                   |
+| `pyproject.toml`      | Project details and the packages it needs                       |
+| `uv.lock`             | Exact package versions. uv updates it, so don't edit it         |
+| `.python-version`     | The Python version uv uses                                      |
+| `.gitignore`          | Files that git should not save                                  |
 
 ## Add a package
 

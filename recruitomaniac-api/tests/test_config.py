@@ -1,3 +1,6 @@
+import pytest
+from pydantic import ValidationError
+
 from app.config import Settings
 
 
@@ -17,3 +20,11 @@ def test_environment_variables_are_read(monkeypatch):
     settings = Settings(_env_file=None)
 
     assert settings.frontend_url == "https://recruitomaniac.example"
+
+
+def test_supabase_url_is_required(monkeypatch):
+    monkeypatch.delenv("SUPABASE_URL", raising=False)
+
+    # pytest.raises passes only if the code inside it raises this error.
+    with pytest.raises(ValidationError, match="supabase_url"):
+        Settings(_env_file=None)

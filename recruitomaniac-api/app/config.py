@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     # Address of the web app. Only this site is allowed to call the API from a browser.
     frontend_url: str = "http://localhost:3000"
 
+    # Your Supabase project's address, e.g. "https://abcdefghijklmnop.supabase.co".
+    # Required (there is no default): the server won't start without it.
+    supabase_url: str
+
     # PostgreSQL connection. Not used yet: it will be needed from issue #4.
     database_url: str | None = None
 
