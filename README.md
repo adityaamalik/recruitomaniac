@@ -19,9 +19,8 @@ An AI-assisted recruitment platform: AI handles the repetitive work, and people 
 | Feature                                                  | Status                              |
 | -------------------------------------------------------- | ----------------------------------- |
 | Public pages (home, about, pricing, how it works, contact) | Built                             |
-| Login and registration screens                           | Built, not yet connected to the API |
-| API server                                               | Starter only                        |
-| Authentication (Supabase)                                | API checks logins; web app next     |
+| Sign up and log in (email and password, Google)          | Built                               |
+| API server, checking logins on private routes            | Built                               |
 | Database                                                 | Planned                             |
 | Job postings, CV parsing and candidate profiling         | Planned                             |
 | Human review, interview scheduling and dashboard         | Planned                             |
@@ -68,7 +67,12 @@ npm install
 npm run dev
 ```
 
-Before starting the API, set `SUPABASE_URL` in `recruitomaniac-api/.env` to your [Supabase](https://supabase.com) project's URL. The other values are for upcoming features.
+Logins use a [Supabase](https://supabase.com) project. Before starting, fill in:
+
+- `recruitomaniac-api/.env`: `SUPABASE_URL`
+- `recruitomaniac-ui/.env`: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+
+Each `.env.example` explains where to find the values.
 
 ## Roadmap
 

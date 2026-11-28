@@ -1,22 +1,51 @@
 "use client";
 
-import { secondaryButton } from "./ui";
+import { useState } from "react";
+import { getSupabase } from "../_lib/supabase";
+import { FormMessage, secondaryButton } from "./ui";
 
 /** "Continue with Google" button, used on both /login and /register. */
 export function GoogleButton({ label }: { label: string }) {
-  function handleClick() {
-    // TODO: start the Google sign-in flow once authentication is set up.
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleClick() {
+    setIsLoading(true);
+    setError("");
+
+    // Sends the browser to Google. After the user picks an account, Google sends
+    // them back to Supabase, and Supabase sends them to `redirectTo`.
+    // This works for new and existing users, so it both signs up and logs in.
+    const { error } = await getSupabase().auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/dashboard` },
+    });
+
+    // If it worked, the page is already leaving for Google. We only get here on errors.
+    if (error) {
+      setError(error.message);
+      setIsLoading(false);
+    }
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className={`${secondaryButton} w-full py-3`}
-    >
-      <GoogleLogo />
-      {label}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={isLoading}
+        className={`${secondaryButton} w-full py-3`}
+      >
+        <GoogleLogo />
+        {isLoading ? "Opening Google..." : label}
+      </button>
+
+      {error && (
+        <div className="mt-3">
+          <FormMessage type="error">{error}</FormMessage>
+        </div>
+      )}
+    </>
   );
 }
 

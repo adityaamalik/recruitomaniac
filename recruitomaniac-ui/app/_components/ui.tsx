@@ -1,11 +1,31 @@
 import Link from "next/link";
 import { Icon } from "./icon";
 
+// `disabled:` styles apply while a button is disabled, e.g. while a form is sending.
 export const primaryButton =
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-(--accent) font-semibold text-white transition hover:bg-(--accent-hover) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent)";
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-(--accent) font-semibold text-white transition hover:bg-(--accent-hover) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent) disabled:pointer-events-none disabled:opacity-60";
 
 export const secondaryButton =
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-(--line) bg-white font-semibold text-(--ink) transition hover:border-(--ink) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent)";
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-(--line) bg-white font-semibold text-(--ink) transition hover:border-(--ink) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--accent) disabled:pointer-events-none disabled:opacity-60";
+
+/** A message under a form: red for errors, green for success. */
+export function FormMessage({
+  type,
+  children,
+}: {
+  type: "error" | "success";
+  children: React.ReactNode;
+}) {
+  const colors =
+    type === "error" ? "bg-red-50 text-red-700" : "bg-green-50 text-green-800";
+
+  return (
+    // role="alert" makes screen readers announce the message as soon as it appears.
+    <p role="alert" className={`rounded-xl px-4 py-3 text-sm ${colors}`}>
+      {children}
+    </p>
+  );
+}
 
 /** Style for text inputs, selects and textareas. */
 export const fieldClass =
